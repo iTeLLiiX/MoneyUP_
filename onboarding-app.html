@@ -1,0 +1,2913 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyUP - Enhanced Onboarding</title>
+    <link rel="icon" type="image/x-icon" href="MoneyUP.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1f2937;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .onboarding-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .onboarding-progress {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-image {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.3));
+        }
+
+        .progress-logo h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .progress-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .progress-percentage {
+            font-size: 18px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .step-indicator:hover:not(:disabled) {
+            background: #f3f4f6;
+        }
+
+        .step-indicator.completed {
+            background: #ecfdf5;
+        }
+
+        .step-indicator.current {
+            background: #d1fae5;
+            box-shadow: 0 0 0 2px #10b981;
+        }
+
+        .step-indicator:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .step-icon {
+            font-size: 20px;
+            opacity: 0.7;
+        }
+
+        .step-indicator.completed .step-icon,
+        .step-indicator.current .step-icon {
+            opacity: 1;
+        }
+
+        .step-number {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .step-indicator.completed .step-number,
+        .step-indicator.current .step-number {
+            color: #10b981;
+        }
+
+        .onboarding-content {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 24px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .step-container {
+            padding: 40px;
+        }
+
+        .welcome-step {
+            text-align: center;
+        }
+
+        .step-header {
+            margin-bottom: 40px;
+        }
+
+        .welcome-logo {
+            margin-bottom: 24px;
+        }
+
+        .welcome-logo-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            filter: drop-shadow(0 4px 8px rgba(16, 185, 129, 0.4));
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from {
+                filter: drop-shadow(0 4px 8px rgba(16, 185, 129, 0.4));
+            }
+            to {
+                filter: drop-shadow(0 6px 12px rgba(16, 185, 129, 0.6));
+            }
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.15;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.25;
+            }
+        }
+
+        .step-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .step-header h2 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .step-subtitle {
+            font-size: 18px;
+            color: #6b7280;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .step-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            color: #10b981;
+            filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.2));
+        }
+
+        .feature-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .highlight-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: #10b981;
+            filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.2));
+        }
+
+        .highlight-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .highlight-card p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .welcome-info {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+        }
+
+        .welcome-info h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .welcome-info ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 24px;
+        }
+
+        .welcome-info li {
+            padding: 8px 0;
+            color: #4b5563;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .welcome-info li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .time-estimate {
+            background: #ecfdf5;
+            border: 1px solid #d1fae5;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .time-estimate strong {
+            color: #059669;
+        }
+
+        .time-estimate small {
+            color: #6b7280;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .error-text {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .income-input-container {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .income-input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .income-input {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            padding: 16px 24px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            width: 200px;
+            background: white;
+        }
+
+        .income-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .currency-symbol {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .income-help {
+            margin-top: 16px;
+        }
+
+        .income-tips, .housing-tips, .transport-tips, .insurance-tips, .digital-tips, .health-tips, .education-tips, .goals-tips {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .income-tips h4, .housing-tips h4, .transport-tips h4, .insurance-tips h4, .digital-tips h4, .health-tips h4, .education-tips h4, .goals-tips h4 {
+            color: #0369a1;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .income-tips p, .housing-tips p, .transport-tips p, .insurance-tips p, .digital-tips p, .health-tips p, .education-tips p, .goals-tips p {
+            color: #0c4a6e;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .summary-section h3 {
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Completion Message */
+        .completion-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .completion-message h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .completion-message p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .checkbox-label:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .checkbox-input {
+            margin-right: 12px;
+            accent-color: #10b981;
+            transform: scale(1.2);
+        }
+
+        .checkbox-text {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .onboarding-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .onboarding-navigation .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .onboarding-navigation .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .onboarding-navigation .btn-primary {
+            background: #10b981;
+            color: white;
+        }
+
+        .onboarding-navigation .btn-primary:hover:not(:disabled) {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .onboarding-navigation .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .onboarding-navigation .btn-secondary:hover:not(:disabled) {
+            background: #e5e7eb;
+        }
+
+        .onboarding-navigation .btn-outline {
+            background: transparent;
+            color: #6b7280;
+            border: 1px solid #d1d5db;
+        }
+
+        .onboarding-navigation .btn-outline:hover:not(:disabled) {
+            background: #f9fafb;
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .privacy-notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .privacy-notice div {
+            color: #0c4a6e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .onboarding-container {
+                padding: 12px;
+            }
+            
+            .onboarding-progress {
+                padding: 16px;
+            }
+            
+            .progress-header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            
+            .progress-steps {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            
+            .step-indicator {
+                min-width: 50px;
+                padding: 8px 4px;
+            }
+            
+            .step-icon {
+                font-size: 16px;
+            }
+            
+            .step-number {
+                font-size: 10px;
+            }
+            
+            .step-container {
+                padding: 24px 16px;
+            }
+            
+            .step-header h1 {
+                font-size: 28px;
+            }
+            
+            .step-header h2 {
+                font-size: 24px;
+            }
+            
+            .feature-highlights {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .income-input {
+                width: 150px;
+                font-size: 20px;
+            }
+            
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .onboarding-navigation {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .onboarding-navigation .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Bank Connection Styles */
+        .bank-connection-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .connection-option {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .connection-option:hover {
+            border-color: #10b981;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .connection-option.selected {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+        }
+
+        .connection-option .option-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .connection-option h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .connection-option p {
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .option-features {
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .feature-item i {
+            color: #10b981;
+            font-size: 12px;
+        }
+
+        .bank-selection {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .bank-selection h4 {
+                font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .bank-option {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bank-option:hover {
+            border-color: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+        }
+
+        .bank-option.selected {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .bank-logo {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .bank-option span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .connection-info {
+            margin-top: 24px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #93c5fd;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .info-box i {
+            color: #3b82f6;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .info-box h5 {
+                font-size: 16px;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #1e40af;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .bank-connection-options {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .bank-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Progress Bar -->
+        <div class="onboarding-progress">
+            <div class="progress-header">
+                <div class="progress-logo">
+                    <img src="MoneyUP.png" alt="MoneyUP" class="logo-image" />
+                    <h2>MoneyUP</h2>
+                </div>
+                <div class="progress-info">
+                    <span class="progress-text" id="progressText">Schritt 1 von 10</span>
+                    <span class="progress-percentage" id="progressPercentage">10%</span>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 10%"></div>
+            </div>
+            
+            <div class="progress-steps">
+                <button class="step-indicator current" data-step="0" title="Willkommen">
+                    <i class="fas fa-home step-icon"></i>
+                    <span class="step-number">1</span>
+                </button>
+                <button class="step-indicator" data-step="1" title="Persönliche Daten">
+                    <i class="fas fa-user step-icon"></i>
+                    <span class="step-number">2</span>
+                </button>
+                <button class="step-indicator" data-step="2" title="Bankverbindung">
+                    <i class="fas fa-university step-icon"></i>
+                    <span class="step-number">3</span>
+                </button>
+                <button class="step-indicator" data-step="3" title="Einkommen">
+                    <i class="fas fa-euro-sign step-icon"></i>
+                    <span class="step-number">4</span>
+                </button>
+                <button class="step-indicator" data-step="4" title="Wohnen">
+                    <i class="fas fa-building step-icon"></i>
+                    <span class="step-number">5</span>
+                </button>
+                <button class="step-indicator" data-step="5" title="Mobilität">
+                    <i class="fas fa-car step-icon"></i>
+                    <span class="step-number">6</span>
+                </button>
+                <button class="step-indicator" data-step="6" title="Versicherungen">
+                    <i class="fas fa-shield-alt step-icon"></i>
+                    <span class="step-number">7</span>
+                </button>
+                <button class="step-indicator" data-step="7" title="Digital & Tech">
+                    <i class="fas fa-laptop step-icon"></i>
+                    <span class="step-number">8</span>
+                </button>
+                <button class="step-indicator" data-step="8" title="Gesundheit">
+                    <i class="fas fa-heartbeat step-icon"></i>
+                    <span class="step-number">9</span>
+                </button>
+                <button class="step-indicator" data-step="9" title="Bildung & Freizeit">
+                    <i class="fas fa-graduation-cap step-icon"></i>
+                    <span class="step-number">10</span>
+                </button>
+                <button class="step-indicator" data-step="10" title="Ziele & Zusammenfassung">
+                    <i class="fas fa-target step-icon"></i>
+                    <span class="step-number">11</span>
+                </button>
+            </div>
+            </div>
+            
+        <!-- Step Content -->
+        <div class="onboarding-content">
+            <div class="step-container">
+                <!-- Step 1: Welcome -->
+                <div id="step1" class="step welcome-step">
+                    <div class="step-header">
+                        <div class="welcome-logo">
+                            <img src="MoneyUP.png" alt="MoneyUP" class="welcome-logo-image" />
+                        </div>
+                        <h1>Willkommen bei MoneyUP</h1>
+                        <p class="step-subtitle">
+                            Ihre professionelle Lösung für intelligente Finanzverwaltung
+                        </p>
+                    </div>
+                    
+                    <div class="welcome-content">
+                        <div class="feature-highlights">
+                            <div class="highlight-card">
+                                <div class="highlight-icon"><i class="fas fa-chart-line"></i></div>
+                                <h3>Umfassende Analyse</h3>
+                                <p>Detaillierte Erfassung aller Einnahmen und Ausgaben mit über 50 Kategorien</p>
+                            </div>
+                            
+                            <div class="highlight-card">
+                                <div class="highlight-icon"><i class="fas fa-robot"></i></div>
+                                <h3>KI-Unterstützung</h3>
+                                <p>MoneyBot berät Sie professionell bei allen Finanzentscheidungen</p>
+                            </div>
+                            
+                            <div class="highlight-card">
+                                <div class="highlight-icon"><i class="fas fa-bolt"></i></div>
+                                <h3>Steueroptimierung</h3>
+                                <p>Automatische Erkennung absetzbarer Kosten und Optimierungspotenziale</p>
+                            </div>
+                            
+                            <div class="highlight-card">
+                                <div class="highlight-icon"><i class="fas fa-lock"></i></div>
+                                <h3>Datenschutz</h3>
+                                <p>Höchste Sicherheitsstandards und DSGVO-konforme Datenverarbeitung</p>
+                            </div>
+                        </div>
+                        
+                        <div class="welcome-info">
+                            <h3>Was Sie erwartet:</h3>
+                            <ul>
+                                <li>Strukturierte Erfassung Ihrer Finanzsituation in 10 Schritten</li>
+                                <li>Professionelle Beratung durch MoneyBot zu jedem Kostenpunkt</li>
+                                <li>Automatische Berechnung von Steuervorteilen und Sparpotentialen</li>
+                                <li>Individuelle Budgetplanung und Zielsetzung</li>
+                                <li>Umfassende Analyse mit Handlungsempfehlungen</li>
+                            </ul>
+                            
+                            <div class="time-estimate">
+                                <strong>Geschätzte Dauer:</strong> 15-25 Minuten<br />
+                                <small>Sie können jederzeit pausieren und später fortfahren</small>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
+                <!-- Step 2: Personal Information -->
+            <div id="step2" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-user"></i></div>
+                        <h2>Persönliche Informationen</h2>
+                        <p class="step-subtitle">
+                            Diese Angaben helfen uns, Ihre Finanzsituation optimal zu analysieren
+                        </p>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Vollständiger Name *</label>
+                            <input
+                                type="text"
+                                id="name"
+                                class="form-input"
+                                placeholder="Max Mustermann"
+                            />
+                            <span class="error-text" id="nameError" style="display: none;"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="age">Alter *</label>
+                    <input 
+                        type="number" 
+                                id="age"
+                                class="form-input"
+                                placeholder="35"
+                                min="18"
+                                max="100"
+                            />
+                            <span class="error-text" id="ageError" style="display: none;"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="occupation">Beruf</label>
+                            <input
+                                type="text"
+                                id="occupation"
+                                class="form-input"
+                                placeholder="Software-Entwickler"
+                            />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="familyStatus">Familienstand</label>
+                            <select id="familyStatus" class="form-select">
+                                <option value="single">Ledig</option>
+                                <option value="married">Verheiratet</option>
+                                <option value="divorced">Geschieden</option>
+                                <option value="widowed">Verwitwet</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="children">Anzahl Kinder</label>
+                            <input
+                                type="number"
+                                id="children"
+                                class="form-input"
+                                placeholder="0"
+                                min="0"
+                                max="10"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div class="privacy-notice">
+                        <div style="font-size: 20px; color: #0369a1;">🔒</div>
+                        <div>
+                            <strong>Datenschutz:</strong> Alle Angaben werden verschlüsselt gespeichert und 
+                            ausschließlich für Ihre persönliche Finanzanalyse verwendet. 
+                            Eine Weitergabe an Dritte erfolgt nicht.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Bank Connection -->
+                <div id="step2" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-university"></i></div>
+                        <h2>Bankverbindung</h2>
+                        <p class="step-subtitle">
+                            Wählen Sie, wie Sie Ihre Finanzdaten verwalten möchten
+                        </p>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="bank-connection-options">
+                            <div class="connection-option" data-option="manual">
+                                <div class="option-icon">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <h3>Manuell eingeben</h3>
+                                <p>Tragen Sie Ihre Finanzdaten selbst ein und behalten Sie die volle Kontrolle über Ihre Daten.</p>
+                                <div class="option-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Vollständige Privatsphäre</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Lokale Datenspeicherung</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Keine Bankverbindung nötig</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="connection-option" data-option="bank">
+                                <div class="option-icon">
+                                    <i class="fas fa-cloud"></i>
+                                </div>
+                                <h3>Bank verbinden</h3>
+                                <p>Verbinden Sie Ihre Bankkonten und Kreditkarten für automatische Transaktionserfassung.</p>
+                                <div class="option-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Automatische Transaktionen</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Echtzeit-Synchronisation</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Weniger manuelle Eingabe</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-selection" id="bank-selection" style="display: none;">
+                            <h4>Wählen Sie Ihre Bank:</h4>
+                            <div class="bank-grid">
+                                <div class="bank-option" data-bank="sparkasse">
+                                    <div class="bank-logo">🏦</div>
+                                    <span>Sparkasse</span>
+                                </div>
+                                <div class="bank-option" data-bank="volksbank">
+                                    <div class="bank-logo">🏛️</div>
+                                    <span>Volksbank</span>
+                                </div>
+                                <div class="bank-option" data-bank="deutsche-bank">
+                                    <div class="bank-logo">🏢</div>
+                                    <span>Deutsche Bank</span>
+                                </div>
+                                <div class="bank-option" data-bank="commerzbank">
+                                    <div class="bank-logo">🏦</div>
+                                    <span>Commerzbank</span>
+                                </div>
+                                <div class="bank-option" data-bank="ing">
+                                    <div class="bank-logo">🟠</div>
+                                    <span>ING</span>
+                                </div>
+                                <div class="bank-option" data-bank="n26">
+                                    <div class="bank-logo">🔵</div>
+                                    <span>N26</span>
+                                </div>
+                            </div>
+                            
+                            <div class="connection-info">
+                                <div class="info-box">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <div>
+                                        <h5>Sicherheit garantiert</h5>
+                                        <p>Ihre Daten werden verschlüsselt übertragen und sicher gespeichert. Wir verwenden die neuesten Sicherheitsstandards.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Income -->
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-euro-sign"></i></div>
+                        <h2>Ihr monatliches Einkommen</h2>
+                        <p class="step-subtitle">
+                            Geben Sie Ihr Nettoeinkommen nach Steuern und Sozialabgaben ein
+                        </p>
+                    </div>
+                    
+                    <div class="income-input-container">
+                        <div class="income-input-wrapper">
+                    <input 
+                        type="number" 
+                                id="monthlyIncome"
+                        class="income-input" 
+                                placeholder="2500"
+                        min="0"
+                                step="100"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                        <span class="error-text" id="incomeError" style="display: none;"></span>
+                        
+                        <div class="income-help">
+                            <small>
+                                <i class="fas fa-info-circle"></i> Durchschnittliches Nettoeinkommen in Deutschland: 2.500€/Monat
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Einkommensquellen (mehrere auswählbar)</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" value="Gehalt" />
+                                <span class="checkbox-text">Gehalt</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" value="Freiberuflich" />
+                                <span class="checkbox-text">Freiberuflich</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" value="Selbstständig" />
+                                <span class="checkbox-text">Selbstständig</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" value="Renten/Pensionen" />
+                                <span class="checkbox-text">Renten/Pensionen</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" value="Investitionen" />
+                                <span class="checkbox-text">Investitionen</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" value="Sonstige" />
+                                <span class="checkbox-text">Sonstige</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="income-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Ihr Nettoeinkommen ist die Basis für alle weiteren Berechnungen. 
+                            Achten Sie darauf, dass Sie alle regelmäßigen Einkommen berücksichtigen.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Placeholder for other steps -->
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-building"></i></div>
+                        <h2>Wohnen & Immobilien</h2>
+                        <p class="step-subtitle">Alle Kosten rund um Ihre Wohnsituation</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Wohnsituation</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="housingType" value="rent" onchange="updateHousingData()">
+                                <span class="radio-text">Miete</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="housingType" value="own" onchange="updateHousingData()">
+                                <span class="radio-text">Eigentum</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="housingType" value="parents" onchange="updateHousingData()">
+                                <span class="radio-text">Bei Eltern</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Monatliche Miete/Kreditrate (€)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="rentInput"
+                                class="form-input"
+                                placeholder="z.B. 800"
+                        step="0.01"
+                        min="0"
+                                onchange="updateHousingData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                </div>
+                
+                    <div class="form-group">
+                        <label>Nebenkosten (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="utilitiesInput"
+                                class="form-input"
+                                placeholder="z.B. 150"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHousingData()"
+                            />
+                            <span class="currency-symbol">€</span>
+            </div>
+        </div>
+                    
+                    <div class="form-group">
+                        <label>Hausratversicherung (€/Jahr)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="homeInsuranceInput"
+                                class="form-input"
+                                placeholder="z.B. 120"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHousingData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sonstige Wohnkosten (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="otherHousingInput"
+                                class="form-input"
+                                placeholder="z.B. 50"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHousingData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="housing-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Wohnkosten sind meist der größte Posten im Budget. 
+                            Berücksichtigen Sie alle Nebenkosten für eine realistische Einschätzung.
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-car"></i></div>
+                        <h2>Mobilität & Transport</h2>
+                        <p class="step-subtitle">Alle Fortbewegungskosten</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hauptverkehrsmittel</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="transportType" value="car" onchange="updateTransportData()">
+                                <span class="radio-text">Auto</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="transportType" value="public" onchange="updateTransportData()">
+                                <span class="radio-text">Öffentliche Verkehrsmittel</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="transportType" value="bike" onchange="updateTransportData()">
+                                <span class="radio-text">Fahrrad</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="transportType" value="mixed" onchange="updateTransportData()">
+                                <span class="radio-text">Gemischte Nutzung</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Monatliche Spritkosten (€)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="fuelInput"
+                                class="form-input"
+                                placeholder="z.B. 120"
+                                step="0.01"
+                                min="0"
+                                onchange="updateTransportData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Kfz-Versicherung (€/Jahr)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="carInsuranceInput"
+                                class="form-input"
+                                placeholder="z.B. 600"
+                                step="0.01"
+                                min="0"
+                                onchange="updateTransportData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Kfz-Steuer (€/Jahr)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="carTaxInput"
+                                class="form-input"
+                                placeholder="z.B. 120"
+                                step="0.01"
+                                min="0"
+                                onchange="updateTransportData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ÖPNV-Ticket (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="publicTransportInput"
+                                class="form-input"
+                                placeholder="z.B. 80"
+                                step="0.01"
+                                min="0"
+                                onchange="updateTransportData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Wartung & Reparaturen (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="maintenanceInput"
+                                class="form-input"
+                                placeholder="z.B. 50"
+                                step="0.01"
+                                min="0"
+                                onchange="updateTransportData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="transport-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Transportkosten können stark variieren. 
+                            Berücksichtigen Sie auch unregelmäßige Ausgaben wie Reparaturen.
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h2>Versicherungen & Vorsorge</h2>
+                        <p class="step-subtitle">Absicherung und Altersvorsorge</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Krankenversicherung (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="healthInsuranceInput"
+                                class="form-input"
+                                placeholder="z.B. 200"
+                                step="0.01"
+                                min="0"
+                                onchange="updateInsuranceData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Haftpflichtversicherung (€/Jahr)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="liabilityInsuranceInput"
+                                class="form-input"
+                                placeholder="z.B. 60"
+                                step="0.01"
+                                min="0"
+                                onchange="updateInsuranceData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Berufsunfähigkeitsversicherung (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="disabilityInsuranceInput"
+                                class="form-input"
+                                placeholder="z.B. 80"
+                                step="0.01"
+                                min="0"
+                                onchange="updateInsuranceData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Rentenversicherung (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="pensionInsuranceInput"
+                                class="form-input"
+                                placeholder="z.B. 150"
+                                step="0.01"
+                                min="0"
+                                onchange="updateInsuranceData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Private Altersvorsorge (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="privatePensionInput"
+                                class="form-input"
+                                placeholder="z.B. 100"
+                                step="0.01"
+                                min="0"
+                                onchange="updateInsuranceData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sonstige Versicherungen (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="otherInsuranceInput"
+                                class="form-input"
+                                placeholder="z.B. 30"
+                                step="0.01"
+                                min="0"
+                                onchange="updateInsuranceData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="insurance-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Versicherungen sind wichtig für Ihre finanzielle Sicherheit. 
+                            Prüfen Sie regelmäßig, ob Ihre Absicherung ausreicht.
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-laptop"></i></div>
+                        <h2>Digital & Technologie</h2>
+                        <p class="step-subtitle">Internet, Software und digitale Services</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Internet & Telefon (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="internetInput"
+                                class="form-input"
+                                placeholder="z.B. 50"
+                                step="0.01"
+                                min="0"
+                                onchange="updateDigitalData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Mobilfunkvertrag (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="mobileInput"
+                                class="form-input"
+                                placeholder="z.B. 25"
+                                step="0.01"
+                                min="0"
+                                onchange="updateDigitalData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Streaming-Dienste (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="streamingInput"
+                                class="form-input"
+                                placeholder="z.B. 30"
+                                step="0.01"
+                                min="0"
+                                onchange="updateDigitalData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Software & Apps (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="softwareInput"
+                                class="form-input"
+                                placeholder="z.B. 20"
+                                step="0.01"
+                                min="0"
+                                onchange="updateDigitalData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Cloud-Speicher (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="cloudInput"
+                                class="form-input"
+                                placeholder="z.B. 10"
+                                step="0.01"
+                                min="0"
+                                onchange="updateDigitalData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Gaming & Unterhaltung (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="gamingInput"
+                                class="form-input"
+                                placeholder="z.B. 15"
+                                step="0.01"
+                                min="0"
+                                onchange="updateDigitalData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="digital-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Digitale Abos summieren sich schnell. 
+                            Prüfen Sie regelmäßig, welche Services Sie wirklich nutzen.
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h2>Gesundheit & Wellness</h2>
+                        <p class="step-subtitle">Medizinische Versorgung und Vorsorge</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Zuzahlungen Medikamente (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="medicationInput"
+                                class="form-input"
+                                placeholder="z.B. 20"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHealthData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Zahnarzt & Zahnreinigung (€/Jahr)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="dentalInput"
+                                class="form-input"
+                                placeholder="z.B. 200"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHealthData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Fitness & Sport (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="fitnessInput"
+                                class="form-input"
+                                placeholder="z.B. 40"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHealthData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Wellness & Massage (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="wellnessInput"
+                                class="form-input"
+                                placeholder="z.B. 30"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHealthData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Alternative Medizin (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="alternativeMedicineInput"
+                                class="form-input"
+                                placeholder="z.B. 25"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHealthData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sonstige Gesundheitskosten (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="otherHealthInput"
+                                class="form-input"
+                                placeholder="z.B. 15"
+                                step="0.01"
+                                min="0"
+                                onchange="updateHealthData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="health-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Investitionen in Ihre Gesundheit zahlen sich langfristig aus. 
+                            Planen Sie auch unregelmäßige Gesundheitsausgaben ein.
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h2>Bildung & Freizeit</h2>
+                        <p class="step-subtitle">Lernen, Hobbys und Unterhaltung</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Weiterbildung & Kurse (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="educationInput"
+                                class="form-input"
+                                placeholder="z.B. 50"
+                                step="0.01"
+                                min="0"
+                                onchange="updateEducationData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Bücher & Lernmaterial (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="booksInput"
+                                class="form-input"
+                                placeholder="z.B. 20"
+                                step="0.01"
+                                min="0"
+                                onchange="updateEducationData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hobbys & Freizeit (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="hobbiesInput"
+                                class="form-input"
+                                placeholder="z.B. 80"
+                                step="0.01"
+                                min="0"
+                                onchange="updateEducationData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Restaurant & Essen gehen (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="restaurantInput"
+                                class="form-input"
+                                placeholder="z.B. 100"
+                                step="0.01"
+                                min="0"
+                                onchange="updateEducationData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Kino & Events (€/Monat)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="entertainmentInput"
+                                class="form-input"
+                                placeholder="z.B. 40"
+                                step="0.01"
+                                min="0"
+                                onchange="updateEducationData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Urlaub & Reisen (€/Jahr)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="travelInput"
+                                class="form-input"
+                                placeholder="z.B. 1200"
+                                step="0.01"
+                                min="0"
+                                onchange="updateEducationData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="education-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Investitionen in Bildung und Freizeit sind wichtig für Lebensqualität. 
+                            Planen Sie auch größere Ausgaben wie Urlaub voraus.
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="step11" class="step" style="display: none;">
+                    <div class="step-header">
+                        <div class="step-icon"><i class="fas fa-target"></i></div>
+                        <h2>Ziele & Zusammenfassung</h2>
+                        <p class="step-subtitle">Finanzziele setzen und Übersicht</p>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <h3>Ihre Finanzübersicht</h3>
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <div class="summary-label">Monatliches Einkommen</div>
+                                <div class="summary-value" id="summaryIncome">0 €</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">Monatliche Ausgaben</div>
+                                <div class="summary-value" id="summaryExpenses">0 €</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">Verfügbares Budget</div>
+                                <div class="summary-value" id="summaryBudget">0 €</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ihr Hauptfinanzziel</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="financialGoal" value="savings" onchange="updateGoalsData()">
+                                <span class="radio-text">Sparen & Vermögensaufbau</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="financialGoal" value="debt" onchange="updateGoalsData()">
+                                <span class="radio-text">Schulden abbauen</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="financialGoal" value="investment" onchange="updateGoalsData()">
+                                <span class="radio-text">Investieren</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="financialGoal" value="retirement" onchange="updateGoalsData()">
+                                <span class="radio-text">Altersvorsorge</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Monatliches Sparziel (€)</label>
+                        <div class="input-container">
+                            <input
+                                type="number"
+                                id="savingsGoalInput"
+                                class="form-input"
+                                placeholder="z.B. 300"
+                                step="0.01"
+                                min="0"
+                                onchange="updateGoalsData()"
+                            />
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Zeitrahmen für Ihr Ziel</label>
+                        <select id="timeframeSelect" class="form-select" onchange="updateGoalsData()">
+                            <option value="">Bitte wählen</option>
+                            <option value="6months">6 Monate</option>
+                            <option value="1year">1 Jahr</option>
+                            <option value="2years">2 Jahre</option>
+                            <option value="5years">5 Jahre</option>
+                            <option value="10years">10+ Jahre</option>
+                        </select>
+                    </div>
+                    
+                    <div class="goals-tips">
+                        <h4><i class="fas fa-robot"></i> MoneyBot Tipp:</h4>
+                        <p>
+                            Herzlichen Glückwunsch! Sie haben Ihr Onboarding erfolgreich abgeschlossen. 
+                            MoneyUP wird Ihnen dabei helfen, Ihre Finanzziele zu erreichen.
+                        </p>
+                    </div>
+                    
+                    <div class="completion-message">
+                        <h3>🎉 Onboarding abgeschlossen!</h3>
+                        <p>Alle Ihre Daten wurden gespeichert und sind nun in Ihrem MoneyUP Dashboard verfügbar.</p>
+                    </div>
+                </div>
+        </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="onboarding-navigation">
+            <button class="btn btn-secondary" id="prevBtn" onclick="prevStep()" disabled>
+                ← Zurück
+            </button>
+            
+            <button class="btn btn-outline" onclick="pauseOnboarding()">
+                Pausieren
+            </button>
+            
+            <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                Weiter →
+            </button>
+        </div>
+        
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let isLoading = false;
+        let onboardingData = {
+            personalInfo: {
+                name: '',
+                age: 0,
+                occupation: '',
+                familyStatus: 'single',
+                children: 0
+            },
+            bankConnection: {
+                method: 'manual', // 'manual' or 'bank'
+                selectedBank: null,
+                connectedAccounts: []
+            },
+            income: {
+                monthlyNetIncome: 0,
+                incomeSources: []
+            },
+            housing: {
+                housingType: '',
+                rent: 0,
+                utilities: 0,
+                homeInsurance: 0,
+                otherHousing: 0
+            },
+            transport: {
+                transportType: '',
+                fuel: 0,
+                carInsurance: 0,
+                carTax: 0,
+                publicTransport: 0,
+                maintenance: 0
+            },
+            insurance: {
+                healthInsurance: 0,
+                liabilityInsurance: 0,
+                disabilityInsurance: 0,
+                pensionInsurance: 0,
+                privatePension: 0,
+                otherInsurance: 0
+            },
+            digital: {
+                internet: 0,
+                mobile: 0,
+                streaming: 0,
+                software: 0,
+                cloud: 0,
+                gaming: 0
+            },
+            health: {
+                medication: 0,
+                dental: 0,
+                fitness: 0,
+                wellness: 0,
+                alternativeMedicine: 0,
+                otherHealth: 0
+            },
+            education: {
+                education: 0,
+                books: 0,
+                hobbies: 0,
+                restaurant: 0,
+                entertainment: 0,
+                travel: 0
+            },
+            goals: {
+                financialGoal: '',
+                savingsGoal: 0,
+                timeframe: ''
+            }
+        };
+
+        const ONBOARDING_STEPS = [
+            { id: 'welcome', title: 'Willkommen', icon: 'fas fa-home' },
+            { id: 'personal', title: 'Persönliche Daten', icon: 'fas fa-user' },
+            { id: 'bank', title: 'Bankverbindung', icon: 'fas fa-university' },
+            { id: 'income', title: 'Einkommen', icon: 'fas fa-euro-sign' },
+            { id: 'housing', title: 'Wohnen', icon: 'fas fa-building' },
+            { id: 'transportation', title: 'Mobilität', icon: 'fas fa-car' },
+            { id: 'insurance', title: 'Versicherungen', icon: 'fas fa-shield-alt' },
+            { id: 'digital', title: 'Digital & Tech', icon: 'fas fa-laptop' },
+            { id: 'health', title: 'Gesundheit', icon: 'fas fa-heartbeat' },
+            { id: 'education', title: 'Bildung & Freizeit', icon: 'fas fa-graduation-cap' },
+            { id: 'goals', title: 'Ziele & Zusammenfassung', icon: 'fas fa-target' }
+        ];
+
+        // Load saved progress
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('moneyup-onboarding-progress');
+            if (savedProgress) {
+                try {
+                    const parsed = JSON.parse(savedProgress);
+                    currentStep = parsed.currentStep || 1;
+                    onboardingData = { ...onboardingData, ...parsed.data };
+                    updateProgress();
+                    showStep(currentStep);
+                    loadFormData();
+                } catch (error) {
+                    console.error('Error loading progress:', error);
+                }
+            }
+        }
+
+        // Load form data from saved progress
+        function loadFormData() {
+            // Personal Info
+            if (onboardingData.personalInfo) {
+                document.getElementById('nameInput').value = onboardingData.personalInfo.name || '';
+                document.getElementById('ageInput').value = onboardingData.personalInfo.age || '';
+                document.getElementById('occupationInput').value = onboardingData.personalInfo.occupation || '';
+                document.getElementById('familyStatusSelect').value = onboardingData.personalInfo.familyStatus || 'single';
+                document.getElementById('childrenInput').value = onboardingData.personalInfo.children || 0;
+            }
+
+            // Bank Connection
+            if (onboardingData.bankConnection) {
+                // Restore bank connection method selection
+                if (onboardingData.bankConnection.method) {
+                    const connectionOption = document.querySelector(`.connection-option[data-option="${onboardingData.bankConnection.method}"]`);
+                    if (connectionOption) {
+                        connectionOption.classList.add('selected');
+                        
+                        // Show bank selection if bank method is selected
+                        if (onboardingData.bankConnection.method === 'bank') {
+                            const bankSelection = document.getElementById('bank-selection');
+                            if (bankSelection) {
+                                bankSelection.style.display = 'block';
+                            }
+                        }
+                    }
+                }
+                
+                // Restore selected bank
+                if (onboardingData.bankConnection.selectedBank) {
+                    const bankOption = document.querySelector(`.bank-option[data-bank="${onboardingData.bankConnection.selectedBank}"]`);
+                    if (bankOption) {
+                        bankOption.classList.add('selected');
+                    }
+                }
+            }
+
+            // Income
+            if (onboardingData.income) {
+                document.getElementById('incomeInput').value = onboardingData.income.monthlyNetIncome || '';
+                // Load income sources checkboxes
+                if (onboardingData.income.incomeSources) {
+                    onboardingData.income.incomeSources.forEach(source => {
+                        const checkbox = document.querySelector(`input[name="incomeSource"][value="${source}"]`);
+                        if (checkbox) checkbox.checked = true;
+                });
+            }
+        }
+
+            // Housing
+            if (onboardingData.housing) {
+                const housingType = document.querySelector(`input[name="housingType"][value="${onboardingData.housing.housingType}"]`);
+                if (housingType) housingType.checked = true;
+                document.getElementById('rentInput').value = onboardingData.housing.rent || '';
+                document.getElementById('utilitiesInput').value = onboardingData.housing.utilities || '';
+                document.getElementById('homeInsuranceInput').value = onboardingData.housing.homeInsurance || '';
+                document.getElementById('otherHousingInput').value = onboardingData.housing.otherHousing || '';
+            }
+
+            // Transport
+            if (onboardingData.transport) {
+                const transportType = document.querySelector(`input[name="transportType"][value="${onboardingData.transport.transportType}"]`);
+                if (transportType) transportType.checked = true;
+                document.getElementById('fuelInput').value = onboardingData.transport.fuel || '';
+                document.getElementById('carInsuranceInput').value = onboardingData.transport.carInsurance || '';
+                document.getElementById('carTaxInput').value = onboardingData.transport.carTax || '';
+                document.getElementById('publicTransportInput').value = onboardingData.transport.publicTransport || '';
+                document.getElementById('maintenanceInput').value = onboardingData.transport.maintenance || '';
+            }
+
+            // Insurance
+            if (onboardingData.insurance) {
+                document.getElementById('healthInsuranceInput').value = onboardingData.insurance.healthInsurance || '';
+                document.getElementById('liabilityInsuranceInput').value = onboardingData.insurance.liabilityInsurance || '';
+                document.getElementById('disabilityInsuranceInput').value = onboardingData.insurance.disabilityInsurance || '';
+                document.getElementById('pensionInsuranceInput').value = onboardingData.insurance.pensionInsurance || '';
+                document.getElementById('privatePensionInput').value = onboardingData.insurance.privatePension || '';
+                document.getElementById('otherInsuranceInput').value = onboardingData.insurance.otherInsurance || '';
+            }
+
+            // Digital
+            if (onboardingData.digital) {
+                document.getElementById('internetInput').value = onboardingData.digital.internet || '';
+                document.getElementById('mobileInput').value = onboardingData.digital.mobile || '';
+                document.getElementById('streamingInput').value = onboardingData.digital.streaming || '';
+                document.getElementById('softwareInput').value = onboardingData.digital.software || '';
+                document.getElementById('cloudInput').value = onboardingData.digital.cloud || '';
+                document.getElementById('gamingInput').value = onboardingData.digital.gaming || '';
+            }
+
+            // Health
+            if (onboardingData.health) {
+                document.getElementById('medicationInput').value = onboardingData.health.medication || '';
+                document.getElementById('dentalInput').value = onboardingData.health.dental || '';
+                document.getElementById('fitnessInput').value = onboardingData.health.fitness || '';
+                document.getElementById('wellnessInput').value = onboardingData.health.wellness || '';
+                document.getElementById('alternativeMedicineInput').value = onboardingData.health.alternativeMedicine || '';
+                document.getElementById('otherHealthInput').value = onboardingData.health.otherHealth || '';
+            }
+
+            // Education
+            if (onboardingData.education) {
+                document.getElementById('educationInput').value = onboardingData.education.education || '';
+                document.getElementById('booksInput').value = onboardingData.education.books || '';
+                document.getElementById('hobbiesInput').value = onboardingData.education.hobbies || '';
+                document.getElementById('restaurantInput').value = onboardingData.education.restaurant || '';
+                document.getElementById('entertainmentInput').value = onboardingData.education.entertainment || '';
+                document.getElementById('travelInput').value = onboardingData.education.travel || '';
+            }
+
+            // Goals
+            if (onboardingData.goals) {
+                const financialGoal = document.querySelector(`input[name="financialGoal"][value="${onboardingData.goals.financialGoal}"]`);
+                if (financialGoal) financialGoal.checked = true;
+                document.getElementById('savingsGoalInput').value = onboardingData.goals.savingsGoal || '';
+                document.getElementById('timeframeSelect').value = onboardingData.goals.timeframe || '';
+            }
+
+            // Update summary
+            updateSummary();
+        }
+
+        // Save progress
+        function saveProgress() {
+            const progress = {
+                currentStep,
+                data: onboardingData,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('moneyup-onboarding-progress', JSON.stringify(progress));
+        }
+
+        // Update functions for each step
+        function updatePersonalData() {
+            onboardingData.personalInfo = {
+                name: document.getElementById('nameInput').value,
+                age: parseInt(document.getElementById('ageInput').value) || 0,
+                occupation: document.getElementById('occupationInput').value,
+                familyStatus: document.getElementById('familyStatusSelect').value,
+                children: parseInt(document.getElementById('childrenInput').value) || 0
+            };
+            saveProgress();
+        }
+
+        function updateIncomeData() {
+            onboardingData.income = {
+                monthlyNetIncome: parseFloat(document.getElementById('incomeInput').value) || 0,
+                incomeSources: Array.from(document.querySelectorAll('input[name="incomeSource"]:checked')).map(cb => cb.value)
+            };
+            saveProgress();
+            updateSummary();
+        }
+
+        function updateHousingData() {
+            const housingType = document.querySelector('input[name="housingType"]:checked');
+            onboardingData.housing = {
+                housingType: housingType ? housingType.value : '',
+                rent: parseFloat(document.getElementById('rentInput').value) || 0,
+                utilities: parseFloat(document.getElementById('utilitiesInput').value) || 0,
+                homeInsurance: parseFloat(document.getElementById('homeInsuranceInput').value) || 0,
+                otherHousing: parseFloat(document.getElementById('otherHousingInput').value) || 0
+            };
+            saveProgress();
+            updateSummary();
+        }
+
+        function updateTransportData() {
+            const transportType = document.querySelector('input[name="transportType"]:checked');
+            onboardingData.transport = {
+                transportType: transportType ? transportType.value : '',
+                fuel: parseFloat(document.getElementById('fuelInput').value) || 0,
+                carInsurance: parseFloat(document.getElementById('carInsuranceInput').value) || 0,
+                carTax: parseFloat(document.getElementById('carTaxInput').value) || 0,
+                publicTransport: parseFloat(document.getElementById('publicTransportInput').value) || 0,
+                maintenance: parseFloat(document.getElementById('maintenanceInput').value) || 0
+            };
+            saveProgress();
+            updateSummary();
+        }
+
+        function updateInsuranceData() {
+            onboardingData.insurance = {
+                healthInsurance: parseFloat(document.getElementById('healthInsuranceInput').value) || 0,
+                liabilityInsurance: parseFloat(document.getElementById('liabilityInsuranceInput').value) || 0,
+                disabilityInsurance: parseFloat(document.getElementById('disabilityInsuranceInput').value) || 0,
+                pensionInsurance: parseFloat(document.getElementById('pensionInsuranceInput').value) || 0,
+                privatePension: parseFloat(document.getElementById('privatePensionInput').value) || 0,
+                otherInsurance: parseFloat(document.getElementById('otherInsuranceInput').value) || 0
+            };
+            saveProgress();
+            updateSummary();
+        }
+
+        function updateDigitalData() {
+            onboardingData.digital = {
+                internet: parseFloat(document.getElementById('internetInput').value) || 0,
+                mobile: parseFloat(document.getElementById('mobileInput').value) || 0,
+                streaming: parseFloat(document.getElementById('streamingInput').value) || 0,
+                software: parseFloat(document.getElementById('softwareInput').value) || 0,
+                cloud: parseFloat(document.getElementById('cloudInput').value) || 0,
+                gaming: parseFloat(document.getElementById('gamingInput').value) || 0
+            };
+            saveProgress();
+            updateSummary();
+        }
+
+        function updateHealthData() {
+            onboardingData.health = {
+                medication: parseFloat(document.getElementById('medicationInput').value) || 0,
+                dental: parseFloat(document.getElementById('dentalInput').value) || 0,
+                fitness: parseFloat(document.getElementById('fitnessInput').value) || 0,
+                wellness: parseFloat(document.getElementById('wellnessInput').value) || 0,
+                alternativeMedicine: parseFloat(document.getElementById('alternativeMedicineInput').value) || 0,
+                otherHealth: parseFloat(document.getElementById('otherHealthInput').value) || 0
+            };
+            saveProgress();
+            updateSummary();
+        }
+
+        function updateEducationData() {
+            onboardingData.education = {
+                education: parseFloat(document.getElementById('educationInput').value) || 0,
+                books: parseFloat(document.getElementById('booksInput').value) || 0,
+                hobbies: parseFloat(document.getElementById('hobbiesInput').value) || 0,
+                restaurant: parseFloat(document.getElementById('restaurantInput').value) || 0,
+                entertainment: parseFloat(document.getElementById('entertainmentInput').value) || 0,
+                travel: parseFloat(document.getElementById('travelInput').value) || 0
+            };
+            saveProgress();
+            updateSummary();
+        }
+
+        function updateGoalsData() {
+            const financialGoal = document.querySelector('input[name="financialGoal"]:checked');
+            onboardingData.goals = {
+                financialGoal: financialGoal ? financialGoal.value : '',
+                savingsGoal: parseFloat(document.getElementById('savingsGoalInput').value) || 0,
+                timeframe: document.getElementById('timeframeSelect').value
+            };
+            saveProgress();
+        }
+
+        function updateSummary() {
+            const income = onboardingData.income.monthlyNetIncome || 0;
+            
+            // Calculate monthly expenses
+            const housing = (onboardingData.housing.rent || 0) + 
+                          (onboardingData.housing.utilities || 0) + 
+                          (onboardingData.housing.otherHousing || 0) +
+                          ((onboardingData.housing.homeInsurance || 0) / 12);
+            
+            const transport = (onboardingData.transport.fuel || 0) + 
+                            (onboardingData.transport.publicTransport || 0) + 
+                            (onboardingData.transport.maintenance || 0) +
+                            ((onboardingData.transport.carInsurance || 0) / 12) +
+                            ((onboardingData.transport.carTax || 0) / 12);
+            
+            const insurance = (onboardingData.insurance.healthInsurance || 0) + 
+                            (onboardingData.insurance.disabilityInsurance || 0) + 
+                            (onboardingData.insurance.pensionInsurance || 0) + 
+                            (onboardingData.insurance.privatePension || 0) + 
+                            (onboardingData.insurance.otherInsurance || 0) +
+                            ((onboardingData.insurance.liabilityInsurance || 0) / 12);
+            
+            const digital = (onboardingData.digital.internet || 0) + 
+                          (onboardingData.digital.mobile || 0) + 
+                          (onboardingData.digital.streaming || 0) + 
+                          (onboardingData.digital.software || 0) + 
+                          (onboardingData.digital.cloud || 0) + 
+                          (onboardingData.digital.gaming || 0);
+            
+            const health = (onboardingData.health.medication || 0) + 
+                         (onboardingData.health.fitness || 0) + 
+                         (onboardingData.health.wellness || 0) + 
+                         (onboardingData.health.alternativeMedicine || 0) + 
+                         (onboardingData.health.otherHealth || 0) +
+                         ((onboardingData.health.dental || 0) / 12);
+            
+            const education = (onboardingData.education.education || 0) + 
+                            (onboardingData.education.books || 0) + 
+                            (onboardingData.education.hobbies || 0) + 
+                            (onboardingData.education.restaurant || 0) + 
+                            (onboardingData.education.entertainment || 0) +
+                            ((onboardingData.education.travel || 0) / 12);
+            
+            const totalExpenses = housing + transport + insurance + digital + health + education;
+            const availableBudget = income - totalExpenses;
+            
+            document.getElementById('summaryIncome').textContent = income.toLocaleString('de-DE') + ' €';
+            document.getElementById('summaryExpenses').textContent = totalExpenses.toLocaleString('de-DE') + ' €';
+            document.getElementById('summaryBudget').textContent = availableBudget.toLocaleString('de-DE') + ' €';
+            
+            // Color code the budget
+            const budgetElement = document.getElementById('summaryBudget');
+            if (availableBudget > 0) {
+                budgetElement.style.color = '#10b981';
+            } else if (availableBudget < 0) {
+                budgetElement.style.color = '#ef4444';
+            } else {
+                budgetElement.style.color = '#6b7280';
+            }
+        }
+
+        // Update progress indicators
+        function updateProgress() {
+            const progressPercentage = (currentStep / ONBOARDING_STEPS.length) * 100;
+            const progressText = `Schritt ${currentStep} von ${ONBOARDING_STEPS.length}`;
+            
+            document.getElementById('progressText').textContent = progressText;
+            document.getElementById('progressPercentage').textContent = Math.round(progressPercentage) + '%';
+            document.getElementById('progressFill').style.width = progressPercentage + '%';
+            
+            // Update step indicators
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                indicator.classList.remove('current', 'completed');
+                if (index + 1 < currentStep) {
+                    indicator.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    indicator.classList.add('current');
+                }
+            });
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentStep === 1;
+            
+            if (currentStep === ONBOARDING_STEPS.length) {
+                nextBtn.innerHTML = 'Abschließen';
+            } else {
+                nextBtn.innerHTML = 'Weiter →';
+            }
+        }
+
+        // Show specific step
+        function showStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.style.display = 'none';
+            });
+            
+            // Show current step
+            const currentStepElement = document.getElementById(`step${stepNumber}`);
+            if (currentStepElement) {
+                currentStepElement.style.display = 'block';
+            }
+            
+            updateProgress();
+        }
+
+        // Validate current step
+        function validateCurrentStep() {
+            const errors = {};
+            
+            if (currentStep === 2) {
+                const name = document.getElementById('name').value.trim();
+                const age = parseInt(document.getElementById('age').value);
+                
+                if (!name) {
+                    errors.name = 'Name ist erforderlich';
+                }
+                if (!age || age < 18 || age > 100) {
+                    errors.age = 'Alter muss zwischen 18 und 100 liegen';
+                }
+            } else if (currentStep === 3) {
+                // Bank connection validation
+                if (!onboardingData.bankConnection.method) {
+                    errors.bankMethod = 'Bitte wählen Sie eine Option für die Bankverbindung';
+                }
+                if (onboardingData.bankConnection.method === 'bank' && !onboardingData.bankConnection.selectedBank) {
+                    errors.bankSelection = 'Bitte wählen Sie eine Bank aus';
+                }
+            } else if (currentStep === 11) {
+                const income = parseFloat(document.getElementById('monthlyIncome').value);
+                if (!income || income <= 0) {
+                    errors.income = 'Einkommen muss größer als 0 sein';
+                }
+            }
+            
+            // Show errors
+            Object.keys(errors).forEach(key => {
+                const errorElement = document.getElementById(key + 'Error');
+                if (errorElement) {
+                    errorElement.textContent = errors[key];
+                errorElement.style.display = 'block';
+                }
+            });
+            
+            return Object.keys(errors).length === 0;
+        }
+
+        // Next step
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < ONBOARDING_STEPS.length) {
+                    currentStep++;
+                    showStep(currentStep);
+                    saveProgress();
+                } else {
+                    completeOnboarding();
+                }
+            }
+        }
+
+        // Previous step
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                saveProgress();
+            }
+        }
+
+        // Pause onboarding
+        function pauseOnboarding() {
+            saveProgress();
+            alert('Onboarding pausiert. Sie können später fortfahren.');
+            // Redirect to main app or home
+            window.location.href = 'index.html';
+        }
+
+        // Complete onboarding
+        function completeOnboarding() {
+            if (isLoading) return;
+
+            isLoading = true;
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = true;
+            nextBtn.innerHTML = '<span class="loading-spinner"></span> Speichert...';
+            
+            // Save complete user profile with all onboarding data
+            const userProfile = {
+                personalInfo: {
+                    name: onboardingData.personalInfo.name,
+                    age: onboardingData.personalInfo.age,
+                    occupation: onboardingData.personalInfo.occupation,
+                    familyStatus: onboardingData.personalInfo.familyStatus,
+                    children: onboardingData.personalInfo.children,
+                    monthlyIncome: onboardingData.income.monthlyNetIncome,
+                },
+                bankConnection: onboardingData.bankConnection,
+                income: onboardingData.income,
+                housing: onboardingData.housing,
+                transport: onboardingData.transport,
+                insurance: onboardingData.insurance,
+                digital: onboardingData.digital,
+                health: onboardingData.health,
+                education: onboardingData.education,
+                goals: onboardingData.goals,
+                onboardingCompleted: true,
+                completedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('moneyup-user-profile', JSON.stringify(userProfile));
+            localStorage.setItem('moneyup-onboarding-completed', 'true');
+            
+            // Create initial transactions from onboarding data
+            createInitialTransactions();
+            
+            // Clean up progress data
+            localStorage.removeItem('moneyup-onboarding-progress');
+            
+            setTimeout(() => {
+                alert('Onboarding erfolgreich abgeschlossen! 🎉\n\nAlle Ihre Daten wurden gespeichert und sind nun in Ihrem MoneyUP Dashboard verfügbar.');
+                window.location.href = 'app.html';
+            }, 1500);
+        }
+
+        // Create initial transactions from onboarding data
+        function createInitialTransactions() {
+            const transactions = [];
+            const currentDate = new Date();
+            
+            // Housing transactions
+            if (onboardingData.housing) {
+                if (onboardingData.housing.rent > 0) {
+                    transactions.push({
+                        id: `housing_rent_${Date.now()}`,
+                        amount: -onboardingData.housing.rent,
+                        category: 'wohnen',
+                        subcategory: 'miete',
+                        description: 'Monatliche Miete',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+                if (onboardingData.housing.utilities > 0) {
+                    transactions.push({
+                        id: `housing_utilities_${Date.now()}`,
+                        amount: -onboardingData.housing.utilities,
+                        category: 'wohnen',
+                        subcategory: 'nebenkosten',
+                        description: 'Nebenkosten',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+            }
+            
+            // Transport transactions
+            if (onboardingData.transport) {
+                if (onboardingData.transport.fuel > 0) {
+                    transactions.push({
+                        id: `transport_fuel_${Date.now()}`,
+                        amount: -onboardingData.transport.fuel,
+                        category: 'transport',
+                        subcategory: 'sprit',
+                        description: 'Spritkosten',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+                if (onboardingData.transport.publicTransport > 0) {
+                    transactions.push({
+                        id: `transport_public_${Date.now()}`,
+                        amount: -onboardingData.transport.publicTransport,
+                        category: 'transport',
+                        subcategory: 'oeffentlich',
+                        description: 'ÖPNV-Ticket',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+            }
+            
+            // Insurance transactions
+            if (onboardingData.insurance) {
+                if (onboardingData.insurance.healthInsurance > 0) {
+                    transactions.push({
+                        id: `insurance_health_${Date.now()}`,
+                        amount: -onboardingData.insurance.healthInsurance,
+                        category: 'versicherung',
+                        subcategory: 'krankenversicherung',
+                        description: 'Krankenversicherung',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+            }
+            
+            // Digital transactions
+            if (onboardingData.digital) {
+                if (onboardingData.digital.internet > 0) {
+                    transactions.push({
+                        id: `digital_internet_${Date.now()}`,
+                        amount: -onboardingData.digital.internet,
+                        category: 'abos_services',
+                        subcategory: 'internet',
+                        description: 'Internet & Telefon',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+                if (onboardingData.digital.streaming > 0) {
+                    transactions.push({
+                        id: `digital_streaming_${Date.now()}`,
+                        amount: -onboardingData.digital.streaming,
+                        category: 'abos_services',
+                        subcategory: 'streaming',
+                        description: 'Streaming-Dienste',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+            }
+            
+            // Health transactions
+            if (onboardingData.health) {
+                if (onboardingData.health.fitness > 0) {
+                    transactions.push({
+                        id: `health_fitness_${Date.now()}`,
+                        amount: -onboardingData.health.fitness,
+                        category: 'gesundheit',
+                        subcategory: 'fitness',
+                        description: 'Fitness & Sport',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+            }
+            
+            // Education transactions
+            if (onboardingData.education) {
+                if (onboardingData.education.education > 0) {
+                    transactions.push({
+                        id: `education_courses_${Date.now()}`,
+                        amount: -onboardingData.education.education,
+                        category: 'bildung',
+                        subcategory: 'weiterbildung',
+                        description: 'Weiterbildung & Kurse',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+                if (onboardingData.education.restaurant > 0) {
+                    transactions.push({
+                        id: `education_restaurant_${Date.now()}`,
+                        amount: -onboardingData.education.restaurant,
+                        category: 'unterhaltung',
+                        subcategory: 'restaurant',
+                        description: 'Restaurant & Essen gehen',
+                        date: currentDate.toISOString(),
+                        type: 'expense',
+                        recurring: true,
+                        frequency: 'monthly'
+                    });
+                }
+            }
+            
+            // Save transactions to localStorage
+            if (transactions.length > 0) {
+                localStorage.setItem('moneyup-transactions', JSON.stringify(transactions));
+            }
+        }
+
+        // Handle input changes
+        function handleInputChange() {
+            if (currentStep === 2) {
+                onboardingData.personalInfo.name = document.getElementById('name').value;
+                onboardingData.personalInfo.age = parseInt(document.getElementById('age').value) || 0;
+                onboardingData.personalInfo.occupation = document.getElementById('occupation').value;
+                onboardingData.personalInfo.familyStatus = document.getElementById('familyStatus').value;
+                onboardingData.personalInfo.children = parseInt(document.getElementById('children').value) || 0;
+            } else if (currentStep === 3) {
+                // Bank connection data is already handled by the click events
+                // No additional input handling needed here
+            } else if (currentStep === 4) {
+                onboardingData.income.monthlyNetIncome = parseFloat(document.getElementById('monthlyIncome').value) || 0;
+                
+                // Update income sources
+                const checkedSources = Array.from(document.querySelectorAll('.checkbox-input:checked'))
+                    .map(cb => cb.value);
+                onboardingData.income.incomeSources = checkedSources;
+            }
+            
+            saveProgress();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            showStep(currentStep);
+            
+            // Add event listeners
+            document.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('input', handleInputChange);
+                input.addEventListener('change', handleInputChange);
+            });
+            
+            // Handle step indicator clicks
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    if (index + 1 <= currentStep) {
+                        currentStep = index + 1;
+                        showStep(currentStep);
+                        saveProgress();
+                    }
+                });
+            });
+        });
+
+        // Bank Connection Functions
+        function initializeBankConnection() {
+            const connectionOptions = document.querySelectorAll('.connection-option');
+            const bankSelection = document.getElementById('bank-selection');
+            const bankOptions = document.querySelectorAll('.bank-option');
+
+            connectionOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove selected class from all options
+                    connectionOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    option.classList.add('selected');
+                    
+                    // Get the selected option
+                    const selectedOption = option.getAttribute('data-option');
+                    onboardingData.bankConnection.method = selectedOption;
+                    
+                    // Show/hide bank selection based on choice
+                    if (selectedOption === 'bank') {
+                        bankSelection.style.display = 'block';
+                    } else {
+                        bankSelection.style.display = 'none';
+                        onboardingData.bankConnection.selectedBank = null;
+                    }
+                });
+            });
+
+            bankOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove selected class from all bank options
+                    bankOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    option.classList.add('selected');
+                    
+                    // Store selected bank
+                    const selectedBank = option.getAttribute('data-bank');
+                    onboardingData.bankConnection.selectedBank = selectedBank;
+                });
+            });
+        }
+
+        // Initialize bank connection when step 2 is shown
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for step changes
+            const originalShowStep = showStep;
+            showStep = function(stepNumber) {
+                originalShowStep(stepNumber);
+                if (stepNumber === 2) {
+                    setTimeout(initializeBankConnection, 100);
+                }
+            };
+        });
+    </script>
+</body>
+</html>

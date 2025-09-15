@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyUP - Professionelle Finanzverwaltung</title>
+    <link rel="icon" type="image/x-icon" href="MoneyUP.ico">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="MoneyUP.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="MoneyUP.ico">
+    <link rel="apple-touch-icon" href="MoneyUP.ico">
+    <link rel="shortcut icon" href="MoneyUP.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: #10b981;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .main-logo {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #10b981;
+            border-color: white;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 6px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .card h3 {
+            color: #10b981;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 i {
+            color: #10b981;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Progress Bars */
+        .progress-bar {
+            background: #F2F1F6;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            background: #10b981;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 25px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #3C328C;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, #0EFDD8, #00D4AA);
+            color: #3C328C;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 253, 216, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #3C328C;
+            border: 2px solid #3C328C;
+        }
+
+        .btn-secondary:hover {
+            background: #3C328C;
+            color: white;
+        }
+
+        /* Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message.success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #059669;
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #DC2626;
+        }
+
+        .message.info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #2563EB;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #3C328C;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E5E7EB;
+            border-radius: 6px;
+            background: white;
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0EFDD8;
+            box-shadow: 0 0 0 3px rgba(14, 253, 216, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Setup Section */
+        .setup-section {
+            background: linear-gradient(135deg, rgba(60, 50, 140, 0.05) 0%, rgba(14, 253, 216, 0.05) 100%);
+            padding: 30px;
+            border-radius: 6px;
+            border: 1px solid rgba(14, 253, 216, 0.2);
+            margin: 30px 0;
+        }
+
+        /* Budget Items */
+        .budget-item {
+            background: #F9FAFB;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #0EFDD8;
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .budget-category {
+            font-weight: 600;
+            color: #3C328C;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .budget-amount {
+            font-weight: 600;
+            color: #666;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, #3C328C 0%, #2A1F6B 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #0EFDD8;
+        }
+
+        .welcome-section p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-btn {
+            padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-content.active {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        /* Trust Indicators */
+        .trust-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .trust-item {
+            background: white;
+            padding: 25px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .trust-item i {
+            font-size: 2.5rem;
+            color: #0EFDD8;
+            margin-bottom: 15px;
+        }
+
+        .trust-item h4 {
+            color: #3C328C;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .trust-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="MoneyUP.ico" alt="MoneyUP Logo" class="main-logo" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-text" style="display: none;">MoneyUP</div>
+                <div class="logo-text">MoneyUP</div>
+            </div>
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="showTab('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button class="tab-btn" onclick="showTab('budget')">
+                    <i class="fas fa-wallet"></i> Budget
+                </button>
+                <button class="tab-btn" onclick="showTab('analytics')">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </button>
+                <button class="tab-btn" onclick="showTab('setup')">
+                    <i class="fas fa-cog"></i> Einrichtung
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="welcome-section">
+                <h1>Willkommen bei MoneyUP</h1>
+                <p>Ihre professionelle Finanzverwaltung für mehr Kontrolle und bessere Entscheidungen</p>
+        </div>
+
+            <div class="message success" id="welcomeMessage">
+                <i class="fas fa-check-circle"></i>
+                <span>🎉 Willkommen! Ihre Finanzverwaltung ist bereit. Beginnen Sie mit der Einrichtung.</span>
+        </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3><i class="fas fa-chart-pie"></i> Finanzübersicht</h3>
+                    <p>Monatliches Budget: €3,000.00</p>
+                <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                </div>
+                    <p>Ausgaben: €2,250.00 / €3,000.00</p>
+                    <p>Verbleibend: €750.00</p>
+            </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-heartbeat"></i> Finanzielle Gesundheit</h3>
+                <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%;"></div>
+                </div>
+                    <p>80/100 Punkte</p>
+                    <p>Ausgezeichnet! Sie sind finanziell sehr gut aufgestellt.</p>
+            </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-piggy-bank"></i> Sparziele</h3>
+                <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
+                    <p>Notfallfonds: €225.00 / €9,000.00</p>
+                    <p>+€225.00 diesen Monat gespart!</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">€3,000</div>
+                    <div class="stat-label">Monatliches Einkommen</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">€2,250</div>
+                    <div class="stat-label">Monatliche Ausgaben</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">€750</div>
+                    <div class="stat-label">Verfügbares Budget</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">25%</div>
+                    <div class="stat-label">Sparquote</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-bolt"></i> Schnellaktionen</h3>
+                <button class="btn" onclick="addTransaction()">
+                    <i class="fas fa-plus"></i> Transaktion hinzufügen
+                </button>
+                <button class="btn btn-secondary" onclick="showInsights()">
+                    <i class="fas fa-lightbulb"></i> Finanz-Insights
+                </button>
+                <button class="btn btn-secondary" onclick="openChatbot()">
+                    <i class="fas fa-robot"></i> KI-Assistent
+                </button>
+            </div>
+
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Sicherheit</h4>
+                    <p>Ihre Daten sind verschlüsselt und sicher gespeichert</p>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-lock"></i>
+                    <h4>Datenschutz</h4>
+                    <p>DSGVO-konform mit höchsten Sicherheitsstandards</p>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-award"></i>
+                    <h4>Vertrauen</h4>
+                    <p>Über 10.000 zufriedene Nutzer vertrauen MoneyUP</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Tab -->
+        <div id="budget" class="tab-content">
+            <h2 style="margin-bottom: 30px; color: #3C328C; font-weight: 600;">
+                <i class="fas fa-wallet"></i> Budget-Verwaltung
+            </h2>
+
+            <div class="card">
+                <h3><i class="fas fa-list"></i> Budget-Kategorien</h3>
+                
+                <div class="budget-item">
+                    <div class="budget-header">
+                        <div class="budget-category">
+                            <i class="fas fa-utensils"></i> Lebensmittel
+                        </div>
+                        <div class="budget-amount">€400.00 / €480.00</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 83%;"></div>
+                    </div>
+                </div>
+
+                <div class="budget-item">
+                    <div class="budget-header">
+                        <div class="budget-category">
+                            <i class="fas fa-home"></i> Wohnen
+                        </div>
+                        <div class="budget-amount">€1,200.00 / €1,200.00</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+                    </div>
+
+                <div class="budget-item">
+                    <div class="budget-header">
+                        <div class="budget-category">
+                            <i class="fas fa-car"></i> Transport
+                </div>
+                        <div class="budget-amount">€150.00 / €195.00</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 77%;"></div>
+                </div>
+                    </div>
+
+                <div class="budget-item">
+                    <div class="budget-header">
+                        <div class="budget-category">
+                            <i class="fas fa-gamepad"></i> Unterhaltung
+                </div>
+                        <div class="budget-amount">€200.00 / €300.00</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 67%;"></div>
+                </div>
+            </div>
+        </div>
+
+            <div class="card">
+                <h3><i class="fas fa-target"></i> Budget-Ziele</h3>
+                <p>Setzen Sie sich realistische Sparziele und verfolgen Sie Ihren Fortschritt.</p>
+                <button class="btn" onclick="showMessage('Budget-Ziel hinzugefügt!', 'success')">
+                    <i class="fas fa-plus"></i> Neues Ziel hinzufügen
+                </button>
+                    </div>
+                </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics" class="tab-content">
+            <h2 style="margin-bottom: 30px; color: #3C328C; font-weight: 600;">
+                <i class="fas fa-chart-line"></i> Finanz-Analytics
+            </h2>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">€2,250</div>
+                    <div class="stat-label">Gesamtausgaben</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">€750</div>
+                    <div class="stat-label">Gespartes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">25%</div>
+                    <div class="stat-label">Sparquote</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">€75</div>
+                    <div class="stat-label">Tägliche Ausgaben</div>
+                    </div>
+                </div>
+
+            <div class="card">
+                <h3><i class="fas fa-chart-pie"></i> Ausgabenaufteilung</h3>
+                <p>• <strong>Wohnen:</strong> €1,200.00 (53%)</p>
+                <p>• <strong>Lebensmittel:</strong> €400.00 (18%)</p>
+                <p>• <strong>Transport:</strong> €150.00 (7%)</p>
+                <p>• <strong>Unterhaltung:</strong> €200.00 (9%)</p>
+                <p>• <strong>Sonstiges:</strong> €300.00 (13%)</p>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-trending-up"></i> Trends & Insights</h3>
+                <div class="message info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Ihre Ausgaben sind 5% niedriger als im Vormonat. Gut gemacht!</span>
+                </div>
+                <div class="message success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Sie sparen durchschnittlich €50 mehr pro Woche als geplant.</span>
+                </div>
+                    </div>
+                </div>
+
+        <!-- Setup Tab -->
+        <div id="setup" class="tab-content">
+            <h2 style="margin-bottom: 30px; color: #3C328C; font-weight: 600;">
+                <i class="fas fa-cog"></i> Finanzielle Einrichtung
+            </h2>
+
+            <div class="setup-section">
+                <h3 style="color: #3C328C; margin-bottom: 20px; font-weight: 600;">
+                    <i class="fas fa-user-plus"></i> Erste Einrichtung
+                </h3>
+                <p style="margin-bottom: 30px; color: #666;">
+                    Geben Sie Ihre finanziellen Daten ein, um Ihre persönliche Budget-App zu aktivieren.
+                </p>
+
+                <div class="form-group">
+                    <label for="setupIncome"><i class="fas fa-euro-sign"></i> Monatliches Nettoeinkommen</label>
+                    <input type="number" id="setupIncome" placeholder="z.B. 3000" value="3000">
+                </div>
+
+                <div class="form-group">
+                    <label for="setupRent"><i class="fas fa-home"></i> Miete/Mortgage</label>
+                    <input type="number" id="setupRent" placeholder="z.B. 1200" value="1200">
+                </div>
+
+                <div class="form-group">
+                    <label for="setupInsurance"><i class="fas fa-shield-alt"></i> Versicherungen</label>
+                    <input type="number" id="setupInsurance" placeholder="z.B. 200" value="200">
+                </div>
+
+                <div class="form-group">
+                    <label for="setupFood"><i class="fas fa-utensils"></i> Lebensmittel</label>
+                    <input type="number" id="setupFood" placeholder="z.B. 400" value="400">
+                </div>
+
+                <div class="form-group">
+                    <label for="setupTransport"><i class="fas fa-car"></i> Transport</label>
+                    <input type="number" id="setupTransport" placeholder="z.B. 150" value="150">
+                </div>
+
+                <button class="btn" onclick="saveSetup()" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                    <i class="fas fa-save"></i> Daten speichern und App aktivieren
+                </button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-gem"></i> Premium-Features</h3>
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <i class="fas fa-clock"></i>
+                        <h4>7 Tage kostenlos</h4>
+                        <p>Testen Sie alle Premium-Features</p>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-euro-sign"></i>
+                        <h4>Nur €3.99/Monat</h4>
+                        <p>Danach günstiger als ein Kaffee</p>
+                </div>
+                    <div class="trust-item">
+                        <i class="fas fa-times-circle"></i>
+                        <h4>Jederzeit kündbar</h4>
+                        <p>Keine versteckten Kosten</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'dashboard';
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            currentTab = tabName;
+        }
+
+        function addTransaction() {
+            showMessage('✅ Transaktion hinzugefügt! Ihre Finanzübersicht wurde aktualisiert.', 'success');
+        }
+
+        function showInsights() {
+            const insights = [
+                "💡 Finanz-Insight: Ihre Ausgaben für Lebensmittel sind 15% höher als im Vormonat.",
+                "📈 Trend: Sie sparen durchschnittlich €50 mehr pro Woche als geplant!",
+                "🎯 Empfehlung: Erwägen Sie, Ihre Versicherungen zu überprüfen - Sie könnten €30/Monat sparen.",
+                "💪 Erfolg: Ihre Sparquote ist 5% höher als der Durchschnitt!"
+            ];
+            
+            const randomInsight = insights[Math.floor(Math.random() * insights.length)];
+            showMessage(randomInsight, 'success');
+        }
+
+        function openChatbot() {
+            showMessage('🤖 KI-Assistent: "Hallo! Ich bin hier, um Ihnen bei allen Finanzfragen zu helfen. Was möchten Sie wissen?"', 'success');
+        }
+
+        function saveSetup() {
+            const income = parseFloat(document.getElementById('setupIncome').value) || 0;
+            const rent = parseFloat(document.getElementById('setupRent').value) || 0;
+            const insurance = parseFloat(document.getElementById('setupInsurance').value) || 0;
+            const food = parseFloat(document.getElementById('setupFood').value) || 0;
+            const transport = parseFloat(document.getElementById('setupTransport').value) || 0;
+
+            if (income <= 0 || rent <= 0) {
+                showMessage('❌ Bitte geben Sie mindestens Ihr Einkommen und Ihre Miete ein.', 'error');
+                return;
+            }
+
+            const totalExpenses = rent + insurance + food + transport;
+            const available = income - totalExpenses;
+
+            // Save to localStorage
+            const userData = {
+                fixedCosts: { rent, insurance, subscriptions: 0, otherFixed: 0 },
+                variableCosts: { food, transport, entertainment: 0, shopping: 0 },
+                income: { monthly: income, additional: 0, interval: 'monthly' },
+                subscription: { plan: 'premium', trialDays: 7, price: 3.99, startDate: new Date().toISOString(), status: 'trial' },
+                onboardingCompleted: true,
+                setupDate: new Date().toISOString(),
+                totals: { fixed: rent + insurance, variable: food + transport, income, available }
+            };
+
+            try {
+                localStorage.setItem('moneyup_user_data', JSON.stringify(userData));
+                localStorage.setItem('moneyup_onboarding_completed', 'true');
+                
+                showMessage(`🎉 Perfekt! Ihre Daten wurden gespeichert!\n\n💰 Einkommen: €${income.toFixed(2)}\n🏠 Ausgaben: €${totalExpenses.toFixed(2)}\n💵 Verfügbar: €${available.toFixed(2)}\n\n🚀 App ist jetzt aktiviert!`, 'success');
+                
+                // Update dashboard with new data
+                updateDashboard(userData);
+                
+                // Switch to dashboard
+            setTimeout(() => {
+                    showTab('dashboard');
+                    document.querySelector('.tab-btn[onclick="showTab(\'dashboard\')"]').classList.add('active');
+                }, 2000);
+                
+            } catch (error) {
+                showMessage('❌ Fehler beim Speichern: ' + error.message, 'error');
+            }
+        }
+
+        function updateDashboard(data) {
+            // Update financial overview
+            const budgetCard = document.querySelector('#dashboard .card:first-child');
+            if (budgetCard) {
+                const usedAmount = data.totals.fixed + data.totals.variable;
+                const budgetPercentage = (usedAmount / data.totals.income) * 100;
+                
+                budgetCard.querySelector('.progress-fill').style.width = Math.min(budgetPercentage, 100) + '%';
+                budgetCard.querySelectorAll('p')[0].textContent = `Monatliches Budget: €${data.totals.income.toFixed(2)}`;
+                budgetCard.querySelectorAll('p')[1].textContent = `Ausgaben: €${usedAmount.toFixed(2)} / €${data.totals.income.toFixed(2)}`;
+                budgetCard.querySelectorAll('p')[2].textContent = `Verbleibend: €${data.totals.available.toFixed(2)}`;
+            }
+            
+            // Update stats
+            const statItems = document.querySelectorAll('.stat-item');
+            if (statItems.length >= 4) {
+                statItems[0].querySelector('.stat-value').textContent = `€${data.totals.income.toFixed(0)}`;
+                statItems[1].querySelector('.stat-value').textContent = `€${(data.totals.fixed + data.totals.variable).toFixed(0)}`;
+                statItems[2].querySelector('.stat-value').textContent = `€${data.totals.available.toFixed(0)}`;
+                statItems[3].querySelector('.stat-value').textContent = `${((data.totals.available / data.totals.income) * 100).toFixed(0)}%`;
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i><span>${message}</span>`;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(messageDiv, container.firstChild);
+            
+        setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Load existing data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const onboardingCompleted = localStorage.getItem('moneyup_onboarding_completed');
+            
+            if (!onboardingCompleted) {
+                // Redirect to onboarding if not completed
+                window.location.href = 'moneyup-complete.html';
+                return;
+            }
+            
+            const userData = localStorage.getItem('moneyup_user_data');
+            if (userData) {
+                try {
+                    const data = JSON.parse(userData);
+                    updateDashboard(data);
+                    showMessage('🎉 Willkommen zurück! Ihre Daten wurden geladen.', 'success');
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                    // If data is corrupted, redirect to onboarding
+                    localStorage.clear();
+                    window.location.href = 'moneyup-complete.html';
+                }
+                } else {
+                // No data found, redirect to onboarding
+                window.location.href = 'moneyup-complete.html';
+            }
+        });
+    </script>
+</body>
+</html>
