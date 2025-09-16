@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface User {
   id: string;
@@ -155,11 +156,11 @@ export const useAppStore = create<AppStore>()(
         set({ isLoading: true, error: null });
 
         try {
-          // Load user data from localStorage
-          const savedUserProfile = localStorage.getItem('moneyup-user-profile');
-          const onboardingProgress = localStorage.getItem('moneyup-onboarding-progress');
-          const onboardingCompleted = localStorage.getItem('moneyup-onboarding-completed') === 'true';
-          const isPremium = localStorage.getItem('moneyup-premium-user') === 'true';
+          // Load user data from AsyncStorage
+          const savedUserProfile = await AsyncStorage.getItem('moneyup-user-profile');
+          const onboardingProgress = await AsyncStorage.getItem('moneyup-onboarding-progress');
+          const onboardingCompleted = await AsyncStorage.getItem('moneyup-onboarding-completed') === 'true';
+          const isPremium = await AsyncStorage.getItem('moneyup-premium-user') === 'true';
 
           if (savedUserProfile || onboardingProgress) {
             try {
@@ -231,17 +232,19 @@ export const useAppStore = create<AppStore>()(
         }
       },
 
-      logout: () => {
+      logout: async () => {
         // Clear all data
-        localStorage.removeItem('moneyup-user-profile');
-        localStorage.removeItem('moneyup-onboarding-completed');
-        localStorage.removeItem('moneyup-premium-user');
-        localStorage.removeItem('moneyup-transactions');
-        localStorage.removeItem('moneyup-goals');
-        localStorage.removeItem('moneyup-debts');
-        localStorage.removeItem('moneyup-expenses');
-        localStorage.removeItem('moneyup-settings');
-        localStorage.removeItem('moneyup-payment-success');
+        await AsyncStorage.multiRemove([
+          'moneyup-user-profile',
+          'moneyup-onboarding-completed',
+          'moneyup-premium-user',
+          'moneyup-transactions',
+          'moneyup-goals',
+          'moneyup-debts',
+          'moneyup-expenses',
+          'moneyup-settings',
+          'moneyup-payment-success'
+        ]);
 
         set({
           user: null,
@@ -250,7 +253,7 @@ export const useAppStore = create<AppStore>()(
         });
       },
 
-      markOnboardingComplete: () => {
+      markOnboardingComplete: async () => {
         const currentUser = get().user;
         if (currentUser) {
           const updatedUser = {
@@ -259,8 +262,8 @@ export const useAppStore = create<AppStore>()(
             updatedAt: new Date().toISOString(),
           };
           
-          // Save complete user profile to localStorage
-          localStorage.setItem('moneyup-user-profile', JSON.stringify({
+          // Save complete user profile to AsyncStorage
+          await AsyncStorage.setItem('moneyup-user-profile', JSON.stringify({
             personalInfo: {
               name: updatedUser.name,
               age: updatedUser.age,
@@ -278,7 +281,7 @@ export const useAppStore = create<AppStore>()(
             goals: updatedUser.goals,
           }));
           
-          localStorage.setItem('moneyup-onboarding-completed', 'true');
+          await AsyncStorage.setItem('moneyup-onboarding-completed', 'true');
           
           set({ 
             user: updatedUser,
@@ -287,7 +290,7 @@ export const useAppStore = create<AppStore>()(
         }
       },
 
-      markPremiumUser: () => {
+      markPremiumUser: async () => {
         const currentUser = get().user;
         if (currentUser) {
           const updatedUser = {
@@ -296,8 +299,8 @@ export const useAppStore = create<AppStore>()(
             updatedAt: new Date().toISOString(),
           };
           
-          // Save updated user profile to localStorage
-          localStorage.setItem('moneyup-user-profile', JSON.stringify({
+          // Save updated user profile to AsyncStorage
+          await AsyncStorage.setItem('moneyup-user-profile', JSON.stringify({
             personalInfo: {
               name: updatedUser.name,
               age: updatedUser.age,
@@ -315,20 +318,18 @@ export const useAppStore = create<AppStore>()(
             goals: updatedUser.goals,
           }));
           
-          localStorage.setItem('moneyup-premium-user', 'true');
+          await AsyncStorage.setItem('moneyup-premium-user', 'true');
           
           set({ 
             user: updatedUser,
             currentScreen: 'Übersicht'
           });
-          
-          // Force navigation to dashboard
-          window.location.href = '/dashboard';
         }
       },
     }),
     {
       name: 'moneyup-app-store',
+      storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         user: state.user,
         currentScreen: state.currentScreen,

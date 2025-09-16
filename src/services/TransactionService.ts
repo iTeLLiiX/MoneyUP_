@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export interface Transaction {
   id: string;
   amount: number;
@@ -19,33 +21,33 @@ export interface TransactionCategory {
 
 export const TRANSACTION_CATEGORIES: TransactionCategory[] = [
   // Income Categories
-  { id: 'salary', name: 'Gehalt', icon: 'fas fa-briefcase', color: '#10b981', type: 'income' },
-  { id: 'freelance', name: 'Freelance', icon: 'fas fa-laptop', color: '#10b981', type: 'income' },
-  { id: 'investment', name: 'Investitionen', icon: 'fas fa-chart-line', color: '#10b981', type: 'income' },
-  { id: 'bonus', name: 'Bonus', icon: 'fas fa-gift', color: '#10b981', type: 'income' },
-  { id: 'other_income', name: 'Sonstiges Einkommen', icon: 'fas fa-plus-circle', color: '#10b981', type: 'income' },
+  { id: 'salary', name: 'Gehalt', icon: 'briefcase', color: '#10b981', type: 'income' },
+  { id: 'freelance', name: 'Freelance', icon: 'laptop', color: '#10b981', type: 'income' },
+  { id: 'investment', name: 'Investitionen', icon: 'trending-up', color: '#10b981', type: 'income' },
+  { id: 'bonus', name: 'Bonus', icon: 'gift', color: '#10b981', type: 'income' },
+  { id: 'other_income', name: 'Sonstiges Einkommen', icon: 'plus-circle', color: '#10b981', type: 'income' },
   
   // Expense Categories
-  { id: 'groceries', name: 'Lebensmittel', icon: 'fas fa-shopping-cart', color: '#dc2626', type: 'expense' },
-  { id: 'transport', name: 'Transport', icon: 'fas fa-car', color: '#dc2626', type: 'expense' },
-  { id: 'housing', name: 'Wohnen', icon: 'fas fa-home', color: '#dc2626', type: 'expense' },
-  { id: 'utilities', name: 'Nebenkosten', icon: 'fas fa-bolt', color: '#dc2626', type: 'expense' },
-  { id: 'health', name: 'Gesundheit', icon: 'fas fa-heartbeat', color: '#dc2626', type: 'expense' },
-  { id: 'entertainment', name: 'Unterhaltung', icon: 'fas fa-film', color: '#dc2626', type: 'expense' },
-  { id: 'restaurant', name: 'Restaurant', icon: 'fas fa-utensils', color: '#dc2626', type: 'expense' },
-  { id: 'shopping', name: 'Einkaufen', icon: 'fas fa-shopping-bag', color: '#dc2626', type: 'expense' },
-  { id: 'education', name: 'Bildung', icon: 'fas fa-graduation-cap', color: '#dc2626', type: 'expense' },
-  { id: 'insurance', name: 'Versicherung', icon: 'fas fa-shield-alt', color: '#dc2626', type: 'expense' },
-  { id: 'other_expense', name: 'Sonstige Ausgaben', icon: 'fas fa-minus-circle', color: '#dc2626', type: 'expense' }
+  { id: 'groceries', name: 'Lebensmittel', icon: 'shopping-cart', color: '#dc2626', type: 'expense' },
+  { id: 'transport', name: 'Transport', icon: 'car', color: '#dc2626', type: 'expense' },
+  { id: 'housing', name: 'Wohnen', icon: 'home', color: '#dc2626', type: 'expense' },
+  { id: 'utilities', name: 'Nebenkosten', icon: 'zap', color: '#dc2626', type: 'expense' },
+  { id: 'health', name: 'Gesundheit', icon: 'heart', color: '#dc2626', type: 'expense' },
+  { id: 'entertainment', name: 'Unterhaltung', icon: 'film', color: '#dc2626', type: 'expense' },
+  { id: 'restaurant', name: 'Restaurant', icon: 'utensils', color: '#dc2626', type: 'expense' },
+  { id: 'shopping', name: 'Einkaufen', icon: 'shopping-bag', color: '#dc2626', type: 'expense' },
+  { id: 'education', name: 'Bildung', icon: 'graduation-cap', color: '#dc2626', type: 'expense' },
+  { id: 'insurance', name: 'Versicherung', icon: 'shield', color: '#dc2626', type: 'expense' },
+  { id: 'other_expense', name: 'Sonstige Ausgaben', icon: 'minus-circle', color: '#dc2626', type: 'expense' }
 ];
 
 class TransactionService {
   private readonly STORAGE_KEY = 'moneyup-transactions';
 
   // Get all transactions
-  getTransactions(): Transaction[] {
+  async getTransactions(): Promise<Transaction[]> {
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
+      const stored = await AsyncStorage.getItem(this.STORAGE_KEY);
       return stored ? JSON.parse(stored) : [];
     } catch (error) {
       console.error('Error loading transactions:', error);
@@ -54,28 +56,28 @@ class TransactionService {
   }
 
   // Get transactions by date range
-  getTransactionsByDateRange(startDate: string, endDate: string): Transaction[] {
-    const transactions = this.getTransactions();
+  async getTransactionsByDateRange(startDate: string, endDate: string): Promise<Transaction[]> {
+    const transactions = await this.getTransactions();
     return transactions.filter(transaction => 
       transaction.date >= startDate && transaction.date <= endDate
     );
   }
 
   // Get transactions by category
-  getTransactionsByCategory(categoryId: string): Transaction[] {
-    const transactions = this.getTransactions();
+  async getTransactionsByCategory(categoryId: string): Promise<Transaction[]> {
+    const transactions = await this.getTransactions();
     return transactions.filter(transaction => transaction.category === categoryId);
   }
 
   // Get transactions by type
-  getTransactionsByType(type: 'income' | 'expense'): Transaction[] {
-    const transactions = this.getTransactions();
+  async getTransactionsByType(type: 'income' | 'expense'): Promise<Transaction[]> {
+    const transactions = await this.getTransactions();
     return transactions.filter(transaction => transaction.type === type);
   }
 
   // Add new transaction
-  addTransaction(transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>): Transaction {
-    const transactions = this.getTransactions();
+  async addTransaction(transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transaction> {
+    const transactions = await this.getTransactions();
     const newTransaction: Transaction = {
       ...transaction,
       id: `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -84,13 +86,13 @@ class TransactionService {
     };
     
     transactions.push(newTransaction);
-    this.saveTransactions(transactions);
+    await this.saveTransactions(transactions);
     return newTransaction;
   }
 
   // Update transaction
-  updateTransaction(id: string, updates: Partial<Omit<Transaction, 'id' | 'createdAt'>>): Transaction | null {
-    const transactions = this.getTransactions();
+  async updateTransaction(id: string, updates: Partial<Omit<Transaction, 'id' | 'createdAt'>>): Promise<Transaction | null> {
+    const transactions = await this.getTransactions();
     const index = transactions.findIndex(t => t.id === id);
     
     if (index === -1) return null;
@@ -101,18 +103,18 @@ class TransactionService {
       updatedAt: new Date().toISOString()
     };
     
-    this.saveTransactions(transactions);
+    await this.saveTransactions(transactions);
     return transactions[index];
   }
 
   // Delete transaction
-  deleteTransaction(id: string): boolean {
-    const transactions = this.getTransactions();
+  async deleteTransaction(id: string): Promise<boolean> {
+    const transactions = await this.getTransactions();
     const filtered = transactions.filter(t => t.id !== id);
     
     if (filtered.length === transactions.length) return false;
     
-    this.saveTransactions(filtered);
+    await this.saveTransactions(filtered);
     return true;
   }
 
@@ -127,8 +129,8 @@ class TransactionService {
   }
 
   // Calculate total income for a period
-  getTotalIncome(startDate?: string, endDate?: string): number {
-    let transactions = this.getTransactionsByType('income');
+  async getTotalIncome(startDate?: string, endDate?: string): Promise<number> {
+    let transactions = await this.getTransactionsByType('income');
     
     if (startDate && endDate) {
       transactions = transactions.filter(t => t.date >= startDate && t.date <= endDate);
@@ -138,8 +140,8 @@ class TransactionService {
   }
 
   // Calculate total expenses for a period
-  getTotalExpenses(startDate?: string, endDate?: string): number {
-    let transactions = this.getTransactionsByType('expense');
+  async getTotalExpenses(startDate?: string, endDate?: string): Promise<number> {
+    let transactions = await this.getTransactionsByType('expense');
     
     if (startDate && endDate) {
       transactions = transactions.filter(t => t.date >= startDate && t.date <= endDate);
@@ -149,13 +151,15 @@ class TransactionService {
   }
 
   // Get balance for a period
-  getBalance(startDate?: string, endDate?: string): number {
-    return this.getTotalIncome(startDate, endDate) - this.getTotalExpenses(startDate, endDate);
+  async getBalance(startDate?: string, endDate?: string): Promise<number> {
+    const income = await this.getTotalIncome(startDate, endDate);
+    const expenses = await this.getTotalExpenses(startDate, endDate);
+    return income - expenses;
   }
 
   // Get spending by category
-  getSpendingByCategory(startDate?: string, endDate?: string): { [categoryId: string]: number } {
-    let transactions = this.getTransactionsByType('expense');
+  async getSpendingByCategory(startDate?: string, endDate?: string): Promise<{ [categoryId: string]: number }> {
+    let transactions = await this.getTransactionsByType('expense');
     
     if (startDate && endDate) {
       transactions = transactions.filter(t => t.date >= startDate && t.date <= endDate);
@@ -167,17 +171,17 @@ class TransactionService {
     }, {} as { [categoryId: string]: number });
   }
 
-  // Save transactions to localStorage
-  private saveTransactions(transactions: Transaction[]): void {
+  // Save transactions to AsyncStorage
+  private async saveTransactions(transactions: Transaction[]): Promise<void> {
     try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(transactions));
+      await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(transactions));
     } catch (error) {
       console.error('Error saving transactions:', error);
     }
   }
 
   // Create sample transactions for demo
-  createSampleTransactions(): void {
+  async createSampleTransactions(): Promise<void> {
     const sampleTransactions: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>[] = [
       {
         amount: 2800,
@@ -216,9 +220,9 @@ class TransactionService {
       }
     ];
 
-    sampleTransactions.forEach(transaction => {
-      this.addTransaction(transaction);
-    });
+    for (const transaction of sampleTransactions) {
+      await this.addTransaction(transaction);
+    }
   }
 }
 
